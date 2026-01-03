@@ -26,8 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
           participantsHTML = `
             <div class="participants-section">
               <strong>Participants:</strong>
-              <ul class="participants-list">
-                ${details.participants.map(email => `<li>${email}</li>`).join("")}
+              <ul class="participants-list" style="list-style: none;">
+                ${details.participants.map(email => `
+                  <li>
+                    ${email}
+                    <button class="delete-participant" data-email="${email}" data-activity="${name}">❌</button>
+                  </li>
+                `).join("")}
               </ul>
             </div>
           `;
@@ -98,6 +103,29 @@ document.addEventListener("DOMContentLoaded", () => {
       messageDiv.className = "error";
       messageDiv.classList.remove("hidden");
       console.error("Error signing up:", error);
+    }
+  });
+
+  // Add event listener for delete participant buttons
+  activitiesList.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("delete-participant")) {
+      const email = event.target.dataset.email;
+      const activity = event.target.dataset.activity;
+
+      try {
+        const response = await fetch(`/activities/${encodeURIComponent(activity)}/participants/${encodeURIComponent(email)}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          // Refresh the activities list
+          fetchActivities();
+        } else {
+          console.error("Failed to delete participant");
+        }
+      } catch (error) {
+        console.error("Error deleting participant:", error);
+      }
     }
   });
 

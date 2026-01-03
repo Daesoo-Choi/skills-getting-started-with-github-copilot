@@ -160,9 +160,27 @@ footer {
 .participants-list {
   margin: 8px 0 0 18px;
   padding-left: 0;
-  list-style-type: disc;
+  list-style-type: none; /* Remove bullet points */
   color: #333;
   font-size: 15px;
+}
+
+.participants-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.delete-participant {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.delete-participant:hover {
+  color: darkred;
 }
 
 .no-participants {
